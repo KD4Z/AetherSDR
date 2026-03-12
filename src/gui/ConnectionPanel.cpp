@@ -19,7 +19,6 @@ ConnectionPanel::ConnectionPanel(QWidget* parent)
     m_indicatorLabel = new QLabel("●", this);
     m_indicatorLabel->setFixedWidth(20);
     m_indicatorLabel->setAlignment(Qt::AlignCenter);
-    setConnected(false);  // set initial colour
 
     m_statusLabel = new QLabel("Not connected", this);
     statusRow->addWidget(m_indicatorLabel);
@@ -38,6 +37,9 @@ ConnectionPanel::ConnectionPanel(QWidget* parent)
     m_connectBtn = new QPushButton("Connect", this);
     m_connectBtn->setEnabled(false);
     vbox->addWidget(m_connectBtn);
+
+    // All widgets now exist — safe to call setConnected for initial state
+    setConnected(false);
 
     connect(m_radioList, &QListWidget::itemSelectionChanged,
             this, &ConnectionPanel::onListSelectionChanged);
