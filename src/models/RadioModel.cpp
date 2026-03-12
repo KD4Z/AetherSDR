@@ -58,6 +58,10 @@ void RadioModel::onConnected()
     qDebug() << "RadioModel: connected";
     emit connectionStateChanged(true);
 
+    // Register as a GUI client — required before the radio will allow
+    // panadapter / slice creation. Must be sent before "slice list".
+    m_connection.sendCommand("client gui");
+
     // Identify this client to the radio (cosmetic; error is non-fatal).
     m_connection.sendCommand("client program AetherSDR");
 
