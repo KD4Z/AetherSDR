@@ -3,6 +3,7 @@
 #include <QWidget>
 
 class QPushButton;
+class QComboBox;
 class QSlider;
 class QLabel;
 
@@ -37,6 +38,8 @@ public:
 signals:
     // Emitted when the user adjusts the AF gain slider (0–100).
     void afGainChanged(int value);
+    // Emitted when the user changes the tuning step size (Hz).
+    void stepSizeChanged(int hz);
 
 private:
     void buildUI();
@@ -51,6 +54,10 @@ private:
 
     SliceModel* m_slice{nullptr};
     QStringList m_antList{"ANT1", "ANT2"};   // populated from ant_list key
+
+    // Step sizes available in the combo (Hz)
+    static constexpr int STEP_SIZES[9] = {10, 50, 100, 250, 500, 1000, 2500, 5000, 10000};
+    QComboBox* m_stepCombo{nullptr};
 
     // ── Header row ────────────────────────────────────────────────────────
     QLabel*      m_sliceBadge{nullptr};   // "A" / "B" / "C" / "D"

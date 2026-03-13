@@ -41,14 +41,18 @@ public:
     // Set the active slice filter edges (Hz offsets from slice center).
     void setSliceFilter(int lowHz, int highHz);
 
+    // Set the click/scroll tuning step size in Hz (default 100).
+    void setStepSize(int hz) { m_stepHz = hz; }
+
 signals:
-    // Emitted when the user clicks in the panadapter area.
+    // Emitted when the user clicks or scrolls in the panadapter area.
     void frequencyClicked(double mhz);
 
 protected:
     void paintEvent(QPaintEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
+    void wheelEvent(QWheelEvent* event) override;
 
 private:
     void drawGrid(QPainter& p, const QRect& r);
@@ -74,6 +78,9 @@ private:
 
     float m_refLevel{0.0f};         // top of display (dBm)
     float m_dynamicRange{120.0f};   // dB range shown in spectrum
+
+    // Tuning step size for click-snap and wheel scroll (Hz)
+    int m_stepHz{100};
 
     // Waterfall colour range (dBm)
     float m_wfMinDbm{-130.0f};

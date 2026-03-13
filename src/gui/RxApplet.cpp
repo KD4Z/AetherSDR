@@ -2,6 +2,7 @@
 #include "models/SliceModel.h"
 
 #include <QPushButton>
+#include <QComboBox>
 #include <QSlider>
 #include <QLabel>
 #include <QVBoxLayout>
@@ -186,6 +187,32 @@ void RxApplet::buildUI()
         });
         row->addWidget(m_qskBtn);
 
+        root->addLayout(row);
+    }
+
+    root->addWidget(hLine());
+
+    // ── Step size ─────────────────────────────────────────────────────────────
+    {
+        auto* row = new QHBoxLayout;
+        row->setSpacing(4);
+        auto* lbl = new QLabel("STEP:");
+        lbl->setStyleSheet("color: #708090; font-size: 11px;");
+        lbl->setFixedWidth(34);
+        row->addWidget(lbl);
+
+        m_stepCombo = new QComboBox;
+        m_stepCombo->setFixedHeight(22);
+        m_stepCombo->setStyleSheet("font-size: 11px;");
+        const char* labels[] = {"10","50","100","250","500","1K","2.5K","5K","10K"};
+        for (int i = 0; i < 9; ++i)
+            m_stepCombo->addItem(labels[i], STEP_SIZES[i]);
+        m_stepCombo->setCurrentIndex(2);   // default 100 Hz
+        connect(m_stepCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                this, [this](int idx) {
+            emit stepSizeChanged(m_stepCombo->itemData(idx).toInt());
+        });
+        row->addWidget(m_stepCombo, 1);
         root->addLayout(row);
     }
 

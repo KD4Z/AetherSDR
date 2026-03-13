@@ -4,6 +4,7 @@
 #include <QPainterPath>
 #include <QResizeEvent>
 #include <QMouseEvent>
+#include <QWheelEvent>
 #include <cmath>
 #include <cstring>
 
@@ -74,14 +75,37 @@ int SpectrumWidget::mhzToX(double mhz) const
 
 // ─── Mouse ────────────────────────────────────────────────────────────────────
 
+// Snap a frequency (MHz) to the nearest multiple of m_stepHz.
+static double snapToStep(double mhz, int stepHz)
+{
+    if (stepHz <= 0) return mhz;
+    const double stepMhz = stepHz / 1e6;
+    return std::round(mhz / stepMhz) * stepMhz;
+}
+
 void SpectrumWidget::mousePressEvent(QMouseEvent* ev)
 {
     // Only tune if click is in the panadapter area, not the freq scale bar.
     if (ev->position().y() >= height() - FREQ_SCALE_H) return;
 
     const double startMhz = m_centerMhz - m_bandwidthMhz / 2.0;
-    const double mhz = startMhz + (ev->position().x() / width()) * m_bandwidthMhz;
-    emit frequencyClicked(mhz);
+    const double rawMhz = startMhz + (ev->position().x() / width()) * m_bandwidthMhz;
+    emit frequencyClicked(snapToStep(rawMhz, m_stepHz));
+}
+
+void SpectrumWidget::wheelEvent(QWheelEvent* ev)
+{
+    // Only scroll-tune over the panadapter area, not the freq scale bar.
+    if (ev->position().y() >= height() - FREQ_SCALE_H) {
+        ev->ignore();
+        return;
+    }
+    const int ticks = ev->angleDelta().y() / 120;   // +1 per notch up, -1 per notch down
+    if (ticks == 0) { ev->ignore(); return; }
+
+    const double newMhz = snapToStep(m_sliceFreqMhz + ticks * m_stepHz / 1e6, m_stepHz);
+    emit frequencyClicked(newMhz);
+    ev->accept();
 }
 
 // ─── Resize ───────────────────────────────────────────────────────────────────
