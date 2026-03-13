@@ -18,6 +18,7 @@ void SliceModel::sendCommand(const QString& cmd)
 
 void SliceModel::setFrequency(double mhz)
 {
+    if (m_locked) return;           // software lock — block tune while locked
     if (qFuzzyCompare(m_frequency, mhz)) return;
     m_frequency = mhz;
     sendCommand(QString("slice tune %1 %2").arg(m_id).arg(mhz, 0, 'f', 6));

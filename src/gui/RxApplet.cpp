@@ -30,7 +30,8 @@ static QPushButton* mkToggle(const QString& text, QWidget* parent = nullptr)
     b->setCheckable(true);
     b->setFlat(false);         // keep border so "checked" state is clearly visible
     b->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    b->setFixedHeight(26);
+    b->setFixedHeight(22);
+    b->setStyleSheet("font-size: 11px;");
     return b;
 }
 
@@ -39,7 +40,8 @@ static QPushButton* mkStep(const QString& text, QWidget* parent = nullptr)
 {
     auto* b = new QPushButton(text, parent);
     b->setFlat(false);
-    b->setFixedSize(26, 26);
+    b->setFixedSize(22, 22);
+    b->setStyleSheet("font-size: 11px;");
     return b;
 }
 
@@ -68,8 +70,8 @@ RxApplet::RxApplet(QWidget* parent) : QWidget(parent)
 void RxApplet::buildUI()
 {
     auto* root = new QVBoxLayout(this);
-    root->setContentsMargins(6, 6, 6, 6);
-    root->setSpacing(5);
+    root->setContentsMargins(4, 4, 4, 4);
+    root->setSpacing(3);
 
     // ── Header: slice badge | lock | RX ant | TX ant | filter width | QSK ──
     {
@@ -192,7 +194,7 @@ void RxApplet::buildUI()
         auto* row = new QHBoxLayout;
         row->setSpacing(3);
         auto* lbl = new QLabel("AGC:");
-        lbl->setFixedWidth(34);
+        lbl->setFixedWidth(28);
         lbl->setStyleSheet("color: #708090; font-size: 11px;");
         row->addWidget(lbl);
 
@@ -227,8 +229,9 @@ void RxApplet::buildUI()
         row->addWidget(slider, 1);
 
         valLbl = new QLabel(QString::number(initVal));
-        valLbl->setFixedWidth(28);
+        valLbl->setFixedWidth(24);
         valLbl->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+        valLbl->setStyleSheet("font-size: 11px;");
         row->addWidget(valLbl);
         root->addLayout(row);
     };
@@ -253,7 +256,7 @@ void RxApplet::buildUI()
         row->setSpacing(4);
 
         m_sqlBtn = mkToggle("SQL");
-        m_sqlBtn->setFixedWidth(44);
+        m_sqlBtn->setFixedWidth(36);
         m_sqlBtn->setStyleSheet(kGreenActive);
         row->addWidget(m_sqlBtn);
 
@@ -263,7 +266,8 @@ void RxApplet::buildUI()
         row->addWidget(m_sqlSlider, 1);
 
         m_sqlLabel = new QLabel("20");
-        m_sqlLabel->setFixedWidth(28);
+        m_sqlLabel->setFixedWidth(24);
+        m_sqlLabel->setStyleSheet("font-size: 11px;");
         m_sqlLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
         row->addWidget(m_sqlLabel);
 
@@ -317,7 +321,7 @@ void RxApplet::buildUI()
         row->setSpacing(4);
 
         m_ritOnBtn = mkToggle("RIT");
-        m_ritOnBtn->setFixedWidth(38);
+        m_ritOnBtn->setFixedWidth(34);
         m_ritOnBtn->setStyleSheet(kAmberActive);
         row->addWidget(m_ritOnBtn);
 
@@ -326,10 +330,10 @@ void RxApplet::buildUI()
 
         m_ritLabel = new QLabel("0 Hz");
         m_ritLabel->setAlignment(Qt::AlignCenter);
-        m_ritLabel->setMinimumWidth(60);
+        m_ritLabel->setMinimumWidth(50);
         m_ritLabel->setStyleSheet(
-            "QLabel { background: #0a0a18; border: 1px solid #1e2e3e; "
-            "border-radius: 3px; padding: 2px 4px; }");
+            "QLabel { font-size: 11px; background: #0a0a18; border: 1px solid #1e2e3e; "
+            "border-radius: 3px; padding: 1px 3px; }");
         row->addWidget(m_ritLabel, 1);
 
         m_ritPlus = mkStep(">");
@@ -356,7 +360,7 @@ void RxApplet::buildUI()
         row->setSpacing(4);
 
         m_xitOnBtn = mkToggle("XIT");
-        m_xitOnBtn->setFixedWidth(38);
+        m_xitOnBtn->setFixedWidth(34);
         m_xitOnBtn->setStyleSheet(kAmberActive);
         row->addWidget(m_xitOnBtn);
 
@@ -365,10 +369,10 @@ void RxApplet::buildUI()
 
         m_xitLabel = new QLabel("0 Hz");
         m_xitLabel->setAlignment(Qt::AlignCenter);
-        m_xitLabel->setMinimumWidth(60);
+        m_xitLabel->setMinimumWidth(50);
         m_xitLabel->setStyleSheet(
-            "QLabel { background: #0a0a18; border: 1px solid #1e2e3e; "
-            "border-radius: 3px; padding: 2px 4px; }");
+            "QLabel { font-size: 11px; background: #0a0a18; border: 1px solid #1e2e3e; "
+            "border-radius: 3px; padding: 1px 3px; }");
         row->addWidget(m_xitLabel, 1);
 
         m_xitPlus = mkStep(">");
